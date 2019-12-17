@@ -2,7 +2,9 @@ require('dotenv').config();
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as request from "request";
-import { Game, FreddyGame, GameBtnPayload } from "./game";
+import { Game, GameBtnPayload } from "./game";
+import { FreddyGame } from "./game-freddy";
+import { WangTingYuGame } from "./game-wangtingyu";
 import * as _ from "lodash";
 
 // Azure endpoint: https://ustw-messenger-bot.azurewebsites.net
@@ -40,7 +42,8 @@ console.log(`PAGE_ACCESS_TOKEN=${PAGE_ACCESS_TOKEN}`);
 console.log(`VERIFY_TOKEN=${VERIFY_TOKEN}`);
 
 const games: {[key: string]: Game} = {
-  [FreddyGame.RefId]: new FreddyGame(callSendAPI)
+  [FreddyGame.RefId]: new FreddyGame(callSendAPI),
+  [WangTingYuGame.RefId]: new WangTingYuGame(callSendAPI)
 };
 
 // Sets server port and logs message on success
