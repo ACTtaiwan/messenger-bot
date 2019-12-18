@@ -71,7 +71,7 @@ export class WangTingYuGame extends GameBase {
                 payload: {
                   refId: WangTingYuGame.RefId,
                   questionId: nextQId,
-                  answer: false
+                  answer: true
                 }
               },
               {
@@ -79,7 +79,7 @@ export class WangTingYuGame extends GameBase {
                 payload: {
                   refId: WangTingYuGame.RefId,
                   questionId: nextQId,
-                  answer: true
+                  answer: false
                 }
               }
             ]
