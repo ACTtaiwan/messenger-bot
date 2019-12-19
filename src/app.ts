@@ -79,20 +79,22 @@ app.post('/webhook', (req, res) => {
         // }
       } else if (webhook_event.postback) {
         const payload = webhook_event.postback.payload;
-        if (payload === "on_get_started_clicked") {
-          if (webhook_event.postback.referral) {
-            handleReferral(sender_psid, webhook_event.postback.referral);
-          } else {
-            const text = "歡迎光臨US Taiwan Watch美國國會台灣觀測站！請稍候，我們將由專人為您服務。";
-            callSendAPI(sender_psid, {text}); 
-          }
-        } else {
+        try {
           const payloadBtn: GameBtnPayload = JSON.parse(payload);
-          const refId = payload.refId;
+          const refId = payloadBtn.refId;
           const game = games[refId];
           if (game) {
             game.handlePostback(sender_psid, payloadBtn);
           }  
+        } catch (e) {
+          if (payload === "on_get_started_clicked") {
+            if (webhook_event.postback.referral) {
+              handleReferral(sender_psid, webhook_event.postback.referral);
+            } else {
+              const text = "歡迎光臨US Taiwan Watch美國國會台灣觀測站！請稍候，我們將由專人為您服務。";
+              callSendAPI(sender_psid, {text}); 
+            }
+          }
         }
       } else if (webhook_event.referral) {
         handleReferral(sender_psid, webhook_event.referral);
