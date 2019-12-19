@@ -78,18 +78,24 @@ app.post('/webhook', (req, res) => {
         //   callSendAPI(sender_psid, {text});
         // }
       } else if (webhook_event.postback) {
-        const payload: GameBtnPayload = JSON.parse(webhook_event.postback.payload);
-        const refId = payload.refId;
-        const game = games[refId];
-        if (game) {
-          game.handlePostback(sender_psid, payload);
+        const payload = webhook_event.postback.payload;
+        if (payload === "on_get_started_clicked") {
+          if (webhook_event.postback.referral) {
+            handleReferral(sender_psid, webhook_event.postback.referral);
+          } else {
+            const text = "歡迎光臨US Taiwan Watch美國國會台灣觀測站！請稍候，我們將由專人為您服務。";
+            callSendAPI(sender_psid, {text}); 
+          }
+        } else {
+          const payloadBtn: GameBtnPayload = JSON.parse(payload);
+          const refId = payload.refId;
+          const game = games[refId];
+          if (game) {
+            game.handlePostback(sender_psid, payloadBtn);
+          }  
         }
       } else if (webhook_event.referral) {
-        const refId = webhook_event.referral.ref;
-        const game = games[refId];
-        if (game) {
-          game.handleReferral(sender_psid);  
-        }
+        handleReferral(sender_psid, webhook_event.referral);
       }
       
     });
@@ -102,6 +108,14 @@ app.post('/webhook', (req, res) => {
   }
 
 });
+
+const handleReferral = (sender_psid: string, referral: any) => {
+  const refId = referral.ref;
+  const game = games[refId];
+  if (game) {
+    game.handleReferral(sender_psid);  
+  }
+}
 
 // Accepts GET requests at the /webhook endpoint
 app.get('/webhook', (req, res) => {
