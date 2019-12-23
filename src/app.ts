@@ -5,6 +5,7 @@ import * as request from "request";
 import { Game, GameBtnPayload } from "./game";
 import { FreddyGame } from "./game-freddy";
 import { WangTingYuGame } from "./game-wangtingyu";
+import { MiaoPoyaGame } from "./game-poya";
 import * as _ from "lodash";
 
 // Azure endpoint: https://ustw-messenger-bot.azurewebsites.net
@@ -43,7 +44,8 @@ console.log(`VERIFY_TOKEN=${VERIFY_TOKEN}`);
 
 const games: {[key: string]: Game} = {
   [FreddyGame.RefId]: new FreddyGame(callSendAPI),
-  [WangTingYuGame.RefId]: new WangTingYuGame(callSendAPI)
+  [WangTingYuGame.RefId]: new WangTingYuGame(callSendAPI),
+  [MiaoPoyaGame.RefId]: new MiaoPoyaGame(callSendAPI)
 };
 
 // Sets server port and logs message on success
